@@ -1,5 +1,8 @@
 import { createHash } from '../../utilities/hash.mjs';
 import Block from './Block.mjs';
+import Transaction from '../wallet/Transaction.mjs';
+import Wallet from '../wallet/Wallet.mjs';
+import { REWARD_ADDRESS, MINING_REWARD } from '../../utilities/config.mjs';
 
 export default class Blockchain {
   constructor() {
@@ -16,18 +19,36 @@ export default class Blockchain {
   }
 
   // replaceChain tar in en lista av block...
-  replaceChain(chain) {
-    if (chain.length <= this.chain.length) {
-      return;
-    }
+  replaceChain(chain, callback) {
+    if (chain.length <= this.chain.length) return;
 
-    // Validera blocken i listan av block som vi får in...
-    if (!Blockchain.isValid(chain)) {
-      return;
-    }
-    // Om allt är ok, dvs längd och korrekthet så ersätter vi
-    // listan av block med det som vi får in...
+    if (!Blockchain.isValid(chain)) return;
+
+    if (callback) callback();
+
     this.chain = chain;
+  }
+
+  // Validerar inkommande lista av transaktioner mot aktuell instans och dess
+  // lista av transaktioner...
+  validateTransactionData({ chain }) {
+    for (let i = 1; i < chain.length; i++) {
+      const block = chain[i];
+      let rewardCount = 0;
+
+      for (let transaction of block.data) {
+        if (transaction.input.address === REWARD_ADDRESS.address) {
+          rewardCount += 1;
+
+          // Regel 1: Kontrollera om det finns fler belöningstransaktion än 1.
+          if (rewardCount > 1) {
+            console.error('Too many rewards');
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   static isValid(chain) {

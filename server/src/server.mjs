@@ -10,8 +10,9 @@ export const blockChain = new Blockchain();
 export const transactionPool = new TransactionPool();
 export const wallet = new Wallet();
 export const server = new networkServer({
-  blockChain,
+  blockchain: blockChain,
   transactionPool,
+  wallet,
 });
 
 const DEFAULT_PORT = 3000;
@@ -25,14 +26,12 @@ const synchronize = async () => {
   let response = await fetch(`${ROOT_NODE}/api/blocks`);
   if (response) {
     const result = await response.json();
-    console.log('Replacing chain on sync with:', result.data.chain);
     blockChain.replaceChain(result.data.chain);
   }
 
   response = await fetch(`${ROOT_NODE}/api/wallet/transactions`);
   if (response) {
     const result = await response.json();
-    console.log('Replacing transactionPool map on sync with', result.data);
     transactionPool.replaceMap(result.data);
   }
 };

@@ -1,6 +1,8 @@
+import { beforeEach, describe, expect, vi } from 'vitest';
 import Blockchain from './Blockchain.mjs';
 import Block from './Block.mjs';
-import { beforeEach, describe, expect } from 'vitest';
+import Wallet from '../wallet/Wallet.mjs';
+import Transaction from '../wallet/Transaction.mjs';
 
 describe('Blockchain', () => {
   let blockchain, blockchain_2, org_chain;
@@ -99,6 +101,51 @@ describe('Blockchain', () => {
           expect(blockchain.chain).toEqual(blockchain_2.chain);
         });
       });
+    });
+  });
+
+  describe('Validate transaction data', () => {
+    let transaction, rewardTransaction, wallet;
+
+    beforeEach(() => {
+      wallet = new Wallet();
+      transaction = wallet.createTransaction({
+        recipient: 'Niklas',
+        amount: 35,
+      });
+
+      rewardTransaction = Transaction.transactionReward({ miner: wallet });
+    });
+
+    describe('and the transaction data is valid', () => {
+      it('should return true', () => {
+        blockchain_2.addBlock({ data: [transaction, rewardTransaction] });
+
+        expect(
+          blockchain.validateTransactionData({ chain: blockchain_2.chain })
+        ).toBeTruthy();
+      });
+    });
+
+    // Regel 1: endast en belöningstransaktion är tillåten per block...
+    describe('and the transaction data has multiple reward transactions', () => {
+      it('should return false', () => {
+        blockchain_2.addBlock({
+          data: [transaction, rewardTransaction, rewardTransaction],
+        });
+
+        expect(
+          blockchain.validateTransactionData({ chain: blockchain_2.chain })
+        ).toBeFalsy();
+      });
+    });
+
+    // Regel 2: Kontrollera så att outputMap strukturen är korrekt formaterad
+    // Test ska agera på felaktigt format...
+    describe('and the transaction has a badly formatted outputMap', () => {
+      describe('and the transaction is not a reward transaction', () => {});
+
+      describe('and the transaction is a reward transaction', () => {});
     });
   });
 });

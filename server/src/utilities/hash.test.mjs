@@ -1,9 +1,10 @@
+import { expect } from 'vitest';
 import { createHash } from './hash.mjs';
 
 describe('createHash function', () => {
   it('should generate a SHA-256 hash as output', () => {
     expect(createHash('test')).toEqual(
-      '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+      '4d967a30111bf29f0eba01c448b375c1629b2fed01cdfcc3aed91f1b57d5dd5e'
     );
   });
 
@@ -11,5 +12,13 @@ describe('createHash function', () => {
     expect(createHash('olle', 'emelie', 'yanet')).toEqual(
       createHash('emelie', 'olle', 'yanet')
     );
+  });
+
+  it('should create a unique has when any property have changed', () => {
+    const obj = {};
+    const orgHash = createHash(obj);
+    obj['name'] = 'Evert Ljusberg';
+
+    expect(createHash(obj)).not.toEqual(orgHash);
   });
 });

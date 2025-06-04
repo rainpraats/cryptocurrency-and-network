@@ -1,11 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 import { verifySignature } from '../../utilities/keyManager.mjs';
+import { MINING_REWARD, REWARD_ADDRESS } from '../../utilities/config.mjs';
 
 export default class Transaction {
-  constructor({ sender, recipient, amount }) {
+  constructor({ sender, recipient, amount, input, outputMap }) {
     this.id = uuidv4().replaceAll('-', '');
-    this.outputMap = this.createOutputMap({ sender, recipient, amount });
-    this.input = this.createInput({ sender, outputMap: this.outputMap });
+    this.outputMap =
+      outputMap || this.createOutputMap({ sender, recipient, amount });
+    this.input =
+      input || this.createInput({ sender, outputMap: this.outputMap });
   }
 
   static validate(transaction) {
@@ -26,17 +29,21 @@ export default class Transaction {
     return true;
   }
 
+  static transactionReward({ miner }) {
+    return new this({
+      input: REWARD_ADDRESS,
+      outputMap: { [miner.publicKey]: MINING_REWARD },
+    });
+  }
+
   update({ sender, recipient, amount }) {
     if (amount > this.outputMap[sender.publicKey])
       throw new Error('Not enough funds!');
 
-    // Är det en ny mottagare som ska uppdateras/läggas till
-    // eller är det en befintlig mottagare som ska uppdateras.
     if (!this.outputMap[recipient]) {
       this.outputMap[recipient] = amount;
     } else {
       this.outputMap[recipient] = this.outputMap[recipient] + amount;
-      // this.outputMap[recipient] =+ amount;
     }
 
     this.outputMap[sender.publicKey] =
