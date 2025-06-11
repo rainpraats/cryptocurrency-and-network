@@ -19,10 +19,15 @@ export default class Blockchain {
   }
 
   // replaceChain tar in en lista av block...
-  replaceChain(chain, callback) {
+  replaceChain(chain, shouldValidate, callback) {
     if (chain.length <= this.chain.length) return;
 
     if (!Blockchain.isValid(chain)) return;
+
+    if (shouldValidate && !this.validateTransactionData({ chain })) {
+      console.error('This chain contains invalid data');
+      return;
+    }
 
     if (callback) callback();
 
@@ -34,6 +39,7 @@ export default class Blockchain {
   validateTransactionData({ chain }) {
     for (let i = 1; i < chain.length; i++) {
       const block = chain[i];
+      const transactionSet = new Set();
       let rewardCount = 0;
 
       for (let transaction of block.data) {
@@ -42,8 +48,37 @@ export default class Blockchain {
 
           // Regel 1: Kontrollera om det finns fler belöningstransaktion än 1.
           if (rewardCount > 1) {
-            console.error('Too many rewards');
+            console.error('Too many rewards'); // TODO Ändra console.error till en riktig AppError
             return false;
+          }
+
+          if (Object.values(transaction.outputMap)[0] !== MINING_REWARD) {
+            console.error('Invalid mining reward');
+            return false;
+          }
+        } else {
+          if (!Transaction.validate(transaction)) {
+            console.error('Invalid transaction');
+            return false;
+          }
+
+          const correctBalance = Wallet.calculateBalance({
+            chain: this.chain,
+            address: transaction.input.address,
+          });
+
+          if (transaction.input.amount !== correctBalance) {
+            console.error('Wrong input amount, balance');
+            return false;
+          }
+
+          if (transactionSet.has(transaction)) {
+            console.error(
+              'The same transaction has already been added to the block'
+            );
+            return false;
+          } else {
+            transactionSet.add(transaction);
           }
         }
       }

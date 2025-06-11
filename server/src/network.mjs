@@ -41,10 +41,18 @@ export default class Network {
 
     switch (channel) {
       case CHANNELS.BLOCKCHAIN:
-        this.blockchain.replaceChain(msg);
+        this.blockchain.replaceChain(msg, true, () => {
+          this.transactionPool.clearBlockTransactions({ chain: msg });
+        });
         break;
       case CHANNELS.TRANSACTION:
-        this.transactionPool.addTransaction(msg);
+        if (
+          !this.transactionPool.transactionExists({
+            address: this.wallet.publicKey,
+          })
+        ) {
+          this.transactionPool.addTransaction(msg);
+        }
         break;
       default:
         return;
