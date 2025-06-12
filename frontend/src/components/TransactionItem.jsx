@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TransactionItem = ({ transaction, blockTimestamp }) => {
+const TransactionItem = ({ transaction }) => {
   const amount = Object.values(transaction.outputMap).reduce(
     (accumulator, currentValue) => accumulator + currentValue
   );
@@ -11,7 +11,7 @@ const TransactionItem = ({ transaction, blockTimestamp }) => {
       <p>
         {transaction.input.timestamp
           ? new Date(transaction.input.timestamp).toLocaleString()
-          : new Date(blockTimestamp).toLocaleString()}
+          : ''}
       </p>
       <p>{amount}</p>
     </li>

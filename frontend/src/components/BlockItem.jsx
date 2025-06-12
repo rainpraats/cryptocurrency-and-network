@@ -11,11 +11,7 @@ const BlockItem = ({ blockNumber, block }) => {
         </summary>
         <ul>
           {block.data.map((transaction) => (
-            <TransactionItem
-              key={transaction.id}
-              transaction={transaction}
-              blockTimestamp={block.timestamp}
-            />
+            <TransactionItem key={transaction.id} transaction={transaction} />
           ))}
         </ul>
       </details>

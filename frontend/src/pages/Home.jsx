@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import CreateTransaction from '../components/CreateTransaction';
 import LatestBlocks from '../components/LatestBlocks';
 import BlockchainService from '../services/blockchainService';
+import LatestTransactions from '../components/LatestTransactions';
 
 const Home = () => {
   const [blockchain, setBlockchain] = useState([]);
@@ -30,6 +31,7 @@ const Home = () => {
     <>
       <CreateTransaction />
       <LatestBlocks blockchain={blockchain} />
+      <LatestTransactions blockchain={blockchain} />
     </>
   );
 };
