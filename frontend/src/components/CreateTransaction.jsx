@@ -1,5 +1,3 @@
-import { blockchainContext } from '../context/blockchainContext';
-
 const CreateTransaction = () => {
   // confirmation message for transaction success
   // Invisible if not signed in.

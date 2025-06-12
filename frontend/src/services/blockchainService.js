@@ -4,8 +4,7 @@ class BlockchainService {
   async getChain() {
     try {
       const response = await fetch('http://localhost:3000/api/blocks/');
-      if (!response.ok)
-        throw new Error('Network response was not ok. Is the server running?');
+      if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
       return data.chain;
     } catch (error) {
@@ -18,8 +17,7 @@ class BlockchainService {
       const response = await fetch(
         'http://localhost:3000/api/wallet/transactions/mine/'
       );
-      if (!response.ok)
-        throw new Error('Network response was not ok. Is the server running?');
+      if (!response.ok) throw new Error('Network response was not ok.');
       const { success } = await response.json();
       return success;
     } catch (error) {
@@ -30,8 +28,7 @@ class BlockchainService {
   async getWalletInfo() {
     try {
       const response = await fetch('http://localhost:3000/api/wallet/info/');
-      if (!response.ok)
-        throw new Error('Network response was not ok. Is the server running?');
+      if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
       return data;
     } catch (error) {
@@ -39,8 +36,17 @@ class BlockchainService {
     }
   }
 
-  async getBlockByHash(hash) {
-    // TODO
+  async listTransactions() {
+    try {
+      const response = await fetch(
+        'http://localhost:3000/api/wallet/transactions/'
+      );
+      if (!response.ok) throw new Error('Network response was not ok.');
+      const { data } = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async sendTransaction(recipient, amount) {
@@ -55,8 +61,7 @@ class BlockchainService {
           body: JSON.stringify({ recipient, amount }),
         }
       );
-      if (!response.ok)
-        throw new Error('Network response was not ok. Is the server running?');
+      if (!response.ok) throw new Error('Network response was not ok.');
       const { success } = await response.json();
       return success;
     } catch (error) {

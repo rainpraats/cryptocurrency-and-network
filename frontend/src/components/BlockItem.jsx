@@ -1,15 +1,23 @@
-import React from 'react';
+import TransactionItem from './TransactionItem';
 
-const BlockItem = () => {
+const BlockItem = ({ blockNumber, block }) => {
   return (
     <li>
       <details>
         <summary>
-          <p>420</p>
-          <p>Date and time</p>
-          <p>Txs: 2</p>
+          <p>{blockNumber}</p>
+          <p>{new Date(block.timestamp).toLocaleString()}</p>
+          <p>Txs: {block.data.length}</p>
         </summary>
-        <ul></ul>
+        <ul>
+          {block.data.map((transaction) => (
+            <TransactionItem
+              key={transaction.id}
+              transaction={transaction}
+              blockTimestamp={block.timestamp}
+            />
+          ))}
+        </ul>
       </details>
     </li>
   );
