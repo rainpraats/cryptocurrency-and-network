@@ -140,14 +140,16 @@ describe('Blockchain', () => {
     });
 
     describe('and the transaction data has multiple reward transactions', () => {
-      it('should return false', () => {
+      it('should throw an error', () => {
         blockchain_2.addBlock({
           data: [transaction, rewardTransaction, rewardTransaction],
         });
 
-        expect(
-          blockchain.validateTransactionData({ chain: blockchain_2.chain })
-        ).toBeFalsy();
+        expect(() => {
+          blockchain
+            .validateTransactionData({ chain: blockchain_2.chain })
+            .toThrow('Too many rewards');
+        });
       });
     });
 
@@ -155,32 +157,36 @@ describe('Blockchain', () => {
     // Test ska agera på felaktigt format...
     describe('and the transaction has a badly formatted outputMap', () => {
       describe('and the transaction is not a reward transaction', () => {
-        it('should return false', () => {
+        it('should throw an error', () => {
           transaction.outputMap[wallet.publicKey] = 123456789;
 
           blockchain_2.addBlock({ data: [transaction, rewardTransaction] });
 
-          expect(
-            blockchain.validateTransactionData({ chain: blockchain_2.chain })
-          ).toBeFalsy();
+          expect(() => {
+            blockchain
+              .validateTransactionData({ chain: blockchain_2.chain })
+              .toThrow('Invalid mining reward');
+          });
         });
       });
 
       describe('and the transaction is a reward transaction', () => {
-        it('should return false', () => {
+        it('should throw an error', () => {
           transaction.outputMap[wallet.publicKey] = 987654321;
 
           blockchain_2.addBlock({ data: [transaction, rewardTransaction] });
 
-          expect(
-            blockchain.validateTransactionData({ chain: blockchain_2.chain })
-          ).toBeFalsy();
+          expect(() => {
+            blockchain
+              .validateTransactionData({ chain: blockchain_2.chain })
+              .toThrow('Invalid transaction');
+          });
         });
       });
     });
 
     describe('and the transaction data has at least one badly formatted input', () => {
-      it('should return false', () => {
+      it('should throw an error', () => {
         wallet.balance = 10000;
         const spookyMap = {
           [wallet.publicKey]: 9900,
@@ -198,21 +204,27 @@ describe('Blockchain', () => {
         };
         blockchain_2.addBlock({ data: [spookyTransaction, rewardTransaction] });
 
-        expect(
-          blockchain.validateTransactionData({ chain: blockchain_2.chain })
-        ).toBeFalsy();
+        expect(() => {
+          blockchain
+            .validateTransactionData({ chain: blockchain_2.chain })
+            .toThrow('Wrong input amount, balance');
+        });
       });
     });
 
     describe('and a block contains multiple identical transactions', () => {
-      it('should return false', () => {
+      it('should throw an error', () => {
         blockchain_2.addBlock({
           data: [transaction, transaction, transaction, transaction],
         });
 
-        expect(
-          blockchain.validateTransactionData({ chain: blockchain_2.chain })
-        ).toBeFalsy();
+        expect(() => {
+          blockchain
+            .validateTransactionData({ chain: blockchain_2.chain })
+            .toThrow(
+              'The same transaction has already been added to the block'
+            );
+        });
       });
     });
   });

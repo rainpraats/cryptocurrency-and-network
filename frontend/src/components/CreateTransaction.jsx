@@ -1,4 +1,4 @@
-import React from 'react';
+import { blockchainContext } from '../context/blockchainContext';
 
 const CreateTransaction = () => {
   // confirmation message for transaction success

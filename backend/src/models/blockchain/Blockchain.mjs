@@ -25,7 +25,6 @@ export default class Blockchain {
     if (!Blockchain.isValid(chain)) return;
 
     if (shouldValidate && !this.validateTransactionData({ chain })) {
-      console.error('This chain contains invalid data');
       return;
     }
 
@@ -48,18 +47,15 @@ export default class Blockchain {
 
           // Regel 1: Kontrollera om det finns fler belöningstransaktion än 1.
           if (rewardCount > 1) {
-            console.error('Too many rewards'); // TODO Ändra console.error till en riktig AppError
-            return false;
+            throw new Error('Too many rewards');
           }
 
           if (Object.values(transaction.outputMap)[0] !== MINING_REWARD) {
-            console.error('Invalid mining reward');
-            return false;
+            throw new Error('Invalid mining reward');
           }
         } else {
           if (!Transaction.validate(transaction)) {
-            console.error('Invalid transaction');
-            return false;
+            throw new Error('Invalid transaction');
           }
 
           const correctBalance = Wallet.calculateBalance({
@@ -68,15 +64,13 @@ export default class Blockchain {
           });
 
           if (transaction.input.amount !== correctBalance) {
-            console.error('Wrong input amount, balance');
-            return false;
+            throw new Error('Wrong input amount, balance');
           }
 
           if (transactionSet.has(transaction)) {
-            console.error(
+            throw new Error(
               'The same transaction has already been added to the block'
             );
-            return false;
           } else {
             transactionSet.add(transaction);
           }

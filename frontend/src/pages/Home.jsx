@@ -5,8 +5,8 @@ import LatestBlocks from '../components/LatestBlocks';
 const Home = () => {
   return (
     <>
-      <CreateTransaction />
-      <LatestBlocks />
+      {/* <CreateTransaction />
+      <LatestBlocks /> */}
     </>
   );
 };

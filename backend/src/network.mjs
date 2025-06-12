@@ -6,9 +6,10 @@ const CHANNELS = {
 };
 
 export default class Network {
-  constructor({ blockchain, transactionPool }) {
+  constructor({ blockchain, transactionPool, wallet }) {
     this.blockchain = blockchain;
     this.transactionPool = transactionPool;
+    this.wallet = wallet;
 
     this.publisher = redis.createClient();
     this.subscriber = redis.createClient();
