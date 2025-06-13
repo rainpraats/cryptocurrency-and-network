@@ -14,6 +14,28 @@ const TransactionItem = ({ transaction }) => {
           : ''}
       </p>
       <p>{amount}</p>
+      <div>
+        <details>
+          <summary>
+            <p>From</p>
+          </summary>
+          <p>{transaction.input.address}</p>
+          <p>{transaction.input.amount}</p>
+        </details>
+        <details>
+          <summary>
+            <p>To</p>
+          </summary>
+          <ul>
+            {Object.entries(transaction.outputMap).map(([address, amount]) => (
+              <li key={`${transaction.id}-${address}`}>
+                <p>{address}</p>
+                <p>{amount}</p>
+              </li>
+            ))}
+          </ul>
+        </details>
+      </div>
     </li>
   );
 };

@@ -11,7 +11,10 @@ const BlockItem = ({ blockNumber, block }) => {
         </summary>
         <ul>
           {block.data.map((transaction) => (
-            <TransactionItem key={transaction.id} transaction={transaction} />
+            <TransactionItem
+              key={`${block.hash}-${transaction.id}`}
+              transaction={transaction}
+            />
           ))}
         </ul>
       </details>
