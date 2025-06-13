@@ -6,6 +6,7 @@ import LatestTransactions from '../components/LatestTransactions';
 
 const Home = () => {
   const [blockchain, setBlockchain] = useState([]);
+  const [unFinalizedTransactions, setUnFinalizedTransactions] = useState([]);
 
   useEffect(() => {
     if (blockchain.length) return;
@@ -27,11 +28,26 @@ const Home = () => {
     console.log(blockchain);
   }, [blockchain]);
 
+  const updateUnFinalizedTransactions = async () => {
+    try {
+      const transactionObj = await new BlockchainService().listTransactions();
+      setUnFinalizedTransactions(Object.values(transactionObj));
+    } catch (error) {
+      console.error('Failed to fetch transactions:', error);
+    }
+  };
+
   return (
     <>
-      <CreateTransaction />
-      <LatestBlocks blockchain={blockchain} />
-      <LatestTransactions blockchain={blockchain} />
+      <CreateTransaction
+        updateUnFinalizedTransactions={updateUnFinalizedTransactions}
+      />
+      <LatestBlocks blockchain={blockchain} setBlockchain={setBlockchain} />
+      <LatestTransactions
+        blockchain={blockchain}
+        updateUnFinalizedTransactions={updateUnFinalizedTransactions}
+        unFinalizedTransactions={unFinalizedTransactions}
+      />
     </>
   );
 };

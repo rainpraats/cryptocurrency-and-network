@@ -58,7 +58,10 @@ class BlockchainService {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ recipient, amount }),
+          body: JSON.stringify({
+            recipient,
+            amount: Number(amount),
+          }),
         }
       );
       if (!response.ok) throw new Error('Network response was not ok.');
