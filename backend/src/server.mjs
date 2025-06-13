@@ -5,6 +5,8 @@ import networkServer from './network.mjs';
 import Blockchain from './models/blockchain/Blockchain.mjs';
 import TransactionPool from './models/wallet/TransactionPool.mjs';
 import Wallet from './models/wallet/Wallet.mjs';
+import errorHandler from './middleware/errorHandler.mjs';
+import AppError from './models/appError.mjs';
 
 export const blockChain = new Blockchain();
 export const transactionPool = new TransactionPool();
@@ -21,6 +23,17 @@ let NODE_PORT;
 
 app.use('/api/blocks', blockchainRoutes);
 app.use('/api/wallet', transactionRoutes);
+
+app.all('*', (req, res, next) => {
+  next(
+    new AppError(
+      `Not found - Got: http://localhost:${process.env.PORT}${req.originalUrl}`,
+      404
+    )
+  );
+});
+
+app.use(errorHandler);
 
 const synchronize = async () => {
   let response = await fetch(`${ROOT_NODE}/api/blocks`);
