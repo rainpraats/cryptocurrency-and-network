@@ -7,6 +7,8 @@ import TransactionPool from './models/wallet/TransactionPool.mjs';
 import Wallet from './models/wallet/Wallet.mjs';
 import errorHandler from './middleware/errorHandler.mjs';
 import AppError from './models/appError.mjs';
+import userRouter from './routes/user-routes.mjs';
+import authRouter from './routes/auth-routes.mjs';
 
 export const blockChain = new Blockchain();
 export const transactionPool = new TransactionPool();
@@ -21,8 +23,10 @@ const DEFAULT_PORT = 3000;
 const ROOT_NODE = `http://localhost:${DEFAULT_PORT}`;
 let NODE_PORT;
 
-app.use('/api/blocks', blockchainRoutes);
-app.use('/api/wallet', transactionRoutes);
+app.use('/api/v1/blocks', blockchainRoutes);
+app.use('/api/v1/wallet', transactionRoutes);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/auth', authRouter);
 
 app.all('*', (req, res, next) => {
   next(
@@ -57,7 +61,7 @@ const PORT = NODE_PORT || DEFAULT_PORT;
 
 app.listen(PORT, () => {
   console.log(
-    `Servern är startad på adress ${PORT} och kör i läget ${process.env.NODE_ENV}`
+    `Server now running at http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`
   );
 
   if (PORT !== DEFAULT_PORT) {

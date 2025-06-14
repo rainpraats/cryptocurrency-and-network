@@ -3,7 +3,7 @@ class BlockchainService {
 
   async getChain() {
     try {
-      const response = await fetch('http://localhost:3000/api/blocks/');
+      const response = await fetch('http://localhost:3000/api/v1/blocks/');
       if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
       return data.chain;
@@ -15,7 +15,7 @@ class BlockchainService {
   async mineBlock() {
     try {
       const response = await fetch(
-        'http://localhost:3000/api/wallet/transactions/mine/'
+        'http://localhost:3000/api/wallet/v1/transactions/mine/'
       );
       if (!response.ok) throw new Error('Network response was not ok.');
       const { success } = await response.json();
@@ -27,7 +27,7 @@ class BlockchainService {
 
   async getWalletInfo() {
     try {
-      const response = await fetch('http://localhost:3000/api/wallet/info/');
+      const response = await fetch('http://localhost:3000/api/v1/wallet/info/');
       if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
       return data;
@@ -39,7 +39,7 @@ class BlockchainService {
   async listTransactions() {
     try {
       const response = await fetch(
-        'http://localhost:3000/api/wallet/transactions/'
+        'http://localhost:3000/api/v1/wallet/transactions/'
       );
       if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
@@ -52,7 +52,7 @@ class BlockchainService {
   async sendTransaction(recipient, amount) {
     try {
       const response = await fetch(
-        'http://localhost:3000/api/wallet/transactions/',
+        'http://localhost:3000/api/v1/wallet/transactions/',
         {
           method: 'POST',
           headers: {
