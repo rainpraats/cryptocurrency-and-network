@@ -23,15 +23,16 @@ const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
         recipient,
         amount
       );
-      if (!success) {
-        setTransactionMessage('Failed to send transaction.');
-        throw new Error('Failed to send transaction.');
+      if (success) {
+        updateUnFinalizedTransactions();
+        setTransactionMessage(
+          'Transaction has been confirmed and will be included in the next block.'
+        );
       }
-      updateUnFinalizedTransactions();
-      setTransactionMessage(
-        'Transaction has been confirmed and will be included in the next block.'
-      );
     } catch (error) {
+      setTransactionMessage(
+        'Failed to send transaction. The server might be offline.'
+      );
       console.error(error);
     } finally {
       setIsSending(false);
