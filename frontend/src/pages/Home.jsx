@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import CreateTransaction from '../components/CreateTransaction';
 import LatestBlocks from '../components/LatestBlocks';
-import BlockchainService from '../services/blockchainService';
+import ClientService from '../services/clientService';
 import LatestTransactions from '../components/LatestTransactions';
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
 
     const fetchBlockchain = async () => {
       try {
-        const chain = await new BlockchainService().getChain();
+        const chain = await new ClientService().getChain();
         setBlockchain(chain);
       } catch (error) {
         console.error('Failed to fetch blockchain:', error);
@@ -30,7 +30,7 @@ const Home = () => {
 
   const updateUnFinalizedTransactions = async () => {
     try {
-      const transactionObj = await new BlockchainService().listTransactions();
+      const transactionObj = await new ClientService().listTransactions();
       setUnFinalizedTransactions(Object.values(transactionObj));
     } catch (error) {
       console.error('Failed to fetch transactions:', error);

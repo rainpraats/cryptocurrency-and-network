@@ -9,7 +9,7 @@ export default class AppError extends Error {
           'Bad Request, missing typically due to malformed request syntax, invalid request message framing, or deceptive request routing';
         break;
       case 401:
-        this.status = 'Unauthorized, you are not logged in';
+        this.status = 'Unauthorized';
         break;
       case 403:
         this.status =
@@ -26,6 +26,9 @@ export default class AppError extends Error {
         this.status = 'The request is larger than what the server allows';
       case 415:
         this.status = 'The media type is not supported';
+        break;
+      case 429:
+        this.status = 'Too many requests';
         break;
       case statusCode.toString().startsWith('5'):
         this.status = 'Internal Server Error';

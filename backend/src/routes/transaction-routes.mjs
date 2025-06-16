@@ -12,7 +12,7 @@ const router = express.Router();
 router
   .route('/transactions')
   .post(protect, addTransaction)
-  .get(listAllTransactions);
+  .get(protect, listAllTransactions);
 router
   .route('/transactions/mine')
   .get(protect, authorize('miner', 'admin'), mineTransactions);

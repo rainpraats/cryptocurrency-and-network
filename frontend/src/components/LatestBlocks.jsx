@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import BlockchainService from '../services/blockchainService';
+import ClientService from '../services/clientService';
 import BlockItem from './BlockItem';
 
 const LatestBlocks = ({ blockchain, setBlockchain }) => {
@@ -11,9 +11,9 @@ const LatestBlocks = ({ blockchain, setBlockchain }) => {
     setErrorMsg('');
 
     try {
-      const success = await new BlockchainService().mineBlock();
+      const success = await new ClientService().mineBlock();
       if (!success) throw new Error('Failed to mine block');
-      const chain = await new BlockchainService().getChain();
+      const chain = await new ClientService().getChain();
       setBlockchain(chain);
     } catch (error) {
       setErrorMsg('Could not mine block. Please try again.');

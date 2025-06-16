@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import BlockchainService from '../services/blockchainService';
+import ClientService from '../services/clientService';
+import './CreateTransaction.css';
 
 const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
   // confirmation message for transaction success
@@ -19,7 +20,7 @@ const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
     setIsSending(true);
     setTransactionMessage('');
     try {
-      const success = await new BlockchainService().sendTransaction(
+      const success = await new ClientService().sendTransaction(
         recipient,
         amount
       );
@@ -49,6 +50,7 @@ const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
             type="text"
             name="recipient"
             placeholder="Recipient address"
+            required
             value={recipient}
             onChange={(e) => setRecipient(e.target.value)}
           />
@@ -63,6 +65,7 @@ const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
             min="0"
             step="any"
             placeholder="0.00"
+            required
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />

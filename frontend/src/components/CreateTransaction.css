@@ -1,0 +1,69 @@
+form {
+  background: #fff;
+  color: #000;
+  padding: 2rem 2.5rem;
+  max-width: 400px;
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5em;
+}
+
+form input[type='text'],
+form input[type='number'] {
+  margin-top: 0.3em;
+  padding: 0.5em 0.8em;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  background: #fafafa;
+  color: #111;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+form input[type='text']:focus,
+form input[type='number']:focus {
+  border: 1.5px solid #111;
+  outline: none;
+}
+
+form button[type='submit'],
+form button[type='button'] {
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.4em;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.5em;
+  transition: background 0.2s, color 0.2s;
+}
+
+form button[type='submit']:hover,
+form button[type='button']:hover,
+form button[type='submit']:focus,
+form button[type='button']:focus {
+  border-color: #fff;
+  outline: none;
+}
+
+form button[disabled] {
+  background: #bbb;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+form p {
+  margin: 0.5em 0 0 0;
+  color: #111;
+  font-size: 1rem;
+  min-height: 1.2em;
+}

@@ -1,9 +1,14 @@
-class BlockchainService {
+class ClientService {
   constructor() {}
 
   async getChain() {
+    const token = localStorage.getItem('jwt');
     try {
-      const response = await fetch('http://localhost:3000/api/v1/blocks/');
+      const response = await fetch('http://localhost:3000/api/v1/blocks/', {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
       return data.chain;
@@ -13,21 +18,37 @@ class BlockchainService {
   }
 
   async mineBlock() {
+    const token = localStorage.getItem('jwt');
     try {
       const response = await fetch(
-        'http://localhost:3000/api/wallet/v1/transactions/mine/'
+        'http://localhost:3000/api/v1/blockchain/mine',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (!response.ok) throw new Error('Network response was not ok.');
-      const { success } = await response.json();
-      return success;
+      const { data } = await response.json();
+      return data;
     } catch (error) {
       throw new Error(error);
     }
   }
 
   async getWalletInfo() {
+    const token = localStorage.getItem('jwt');
     try {
-      const response = await fetch('http://localhost:3000/api/v1/wallet/info/');
+      const response = await fetch(
+        'http://localhost:3000/api/v1/wallet/info/',
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
       return data;
@@ -37,9 +58,15 @@ class BlockchainService {
   }
 
   async listTransactions() {
+    const token = localStorage.getItem('jwt');
     try {
       const response = await fetch(
-        'http://localhost:3000/api/v1/wallet/transactions/'
+        'http://localhost:3000/api/v1/wallet/transactions/',
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (!response.ok) throw new Error('Network response was not ok.');
       const { data } = await response.json();
@@ -50,6 +77,7 @@ class BlockchainService {
   }
 
   async sendTransaction(recipient, amount) {
+    const token = localStorage.getItem('jwt');
     try {
       const response = await fetch(
         'http://localhost:3000/api/v1/wallet/transactions/',
@@ -57,6 +85,7 @@ class BlockchainService {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             recipient,
@@ -72,4 +101,4 @@ class BlockchainService {
     }
   }
 }
-export default BlockchainService;
+export default ClientService;
