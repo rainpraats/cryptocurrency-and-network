@@ -19,12 +19,6 @@ export const loginUser = catchErrorAsync(async (req, res, next) => {
 
   const token = createToken(user._id);
 
-  res.cookie('jwt', token, {
-    expiresIn: new Date(Date.now() * 7 * 24 * 60 * 60 * 1000),
-    // secure: true,
-    // httpOnly: true,
-  });
-
   res
     .status(200)
     .json({ success: true, statusCode: 200, data: { token: token } });
@@ -76,3 +70,28 @@ const createToken = (userId) => {
 const verifyToken = async (token) => {
   return await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 };
+
+export const isTokenValidForUser = catchErrorAsync(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.toLowerCase().startsWith('bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    throw new AppError('Unauthorized, you are not logged in', 401);
+  }
+
+  const decoded = await verifyToken(token);
+
+  const user = await new UserRepository().findById(decoded.id);
+
+  if (!user) {
+    throw new AppError('Unauthorized, you are not logged in', 401);
+  }
+
+  res.status(200).json({ success: true, statusCode: 200 });
+});

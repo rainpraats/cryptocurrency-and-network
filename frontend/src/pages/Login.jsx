@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import ClientService from '../services/clientService';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,36 +16,26 @@ const Login = () => {
   const loginUser = async () => {
     setError('');
     try {
-      const response = await fetch('http://localhost:3000/api/v1/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const token = await new ClientService().getLoginToken({
+        email: email,
+        password: password,
       });
-      const result = await response.json();
-      if (response.ok) {
-        localStorage.setItem('jwt', result.data.token);
-        navigate('/');
-      } else {
-        setError(result.message || 'Login failed');
-      }
+      localStorage.setItem('jwt', token);
+      navigate('/');
     } catch (error) {
       setError('Login failed');
       console.error(error);
     }
   };
 
-  const signUpUser = async (e) => {
+  const signUpUser = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/v1/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const success = await new ClientService().signUp();
 
-      if (response.ok) {
-        handleLogin();
+      if (success) {
+        loginUser();
+      } else {
+        setError('There was a problem when signing up.');
       }
     } catch (error) {
       console.error(error);
