@@ -69,7 +69,6 @@ const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
-          <button type="button">Max</button>
         </label>
       </div>
       <button type="submit" disabled={isSending}>

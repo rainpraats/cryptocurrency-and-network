@@ -5,9 +5,11 @@ const BlockItem = ({ blockNumber, block }) => {
     <li>
       <details>
         <summary>
-          <p>{blockNumber}</p>
-          <p>{new Date(block.timestamp).toLocaleString()}</p>
-          <p>Txs: {block.data.length}</p>
+          <span>
+            <p>{blockNumber}</p>
+            <p>{new Date(block.timestamp).toLocaleString()}</p>
+            <p>Txs: {block.data.length}</p>
+          </span>
         </summary>
         <ul>
           {block.data.map((transaction) => (

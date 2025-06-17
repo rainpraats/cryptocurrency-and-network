@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ClientService from '../services/clientService';
 import BlockItem from './BlockItem';
+import './LatestBlocks.css';
 
 const LatestBlocks = ({ blockchain, setBlockchain }) => {
   const [isMining, setIsMining] = useState(false);

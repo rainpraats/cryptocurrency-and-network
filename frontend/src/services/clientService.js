@@ -74,9 +74,8 @@ class ClientService {
     const token = localStorage.getItem('jwt');
     try {
       const response = await fetch(
-        'http://localhost:3000/api/v1/blockchain/mine',
+        'http://localhost:3000/api/v1/wallet/transactions/mine',
         {
-          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             authorization: `Bearer ${token}`,
