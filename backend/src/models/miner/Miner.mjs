@@ -1,3 +1,4 @@
+import UserRepository from '../../repositories/user-repository.mjs';
 import Transaction from '../wallet/Transaction.mjs';
 
 export default class Miner {
@@ -21,6 +22,11 @@ export default class Miner {
 
     this.server.broadcastChain();
 
+    Object.values(this.transactionPool.transactionMap).forEach(
+      (transaction) => {
+        new UserRepository().addTransactionToUser(transaction);
+      }
+    );
     this.transactionPool.clearTransactions();
   }
 }

@@ -5,6 +5,7 @@ import BlockchainRepository from '../repositories/blockchain-repository.mjs';
 import UserRepository from '../repositories/user-repository.mjs';
 
 export const addTransaction = (req, res) => {
+  const userId = req.user._id.toString();
   const { amount, recipient } = req.body;
   let transaction = transactionPool.transactionExists({
     address: wallet.publicKey,
@@ -13,8 +14,10 @@ export const addTransaction = (req, res) => {
   try {
     if (transaction) {
       transaction.update({ sender: wallet, recipient, amount });
+      transaction.userId = userId;
     } else {
       transaction = wallet.createTransaction({ recipient, amount });
+      transaction.userId = userId;
     }
   } catch (error) {
     return res

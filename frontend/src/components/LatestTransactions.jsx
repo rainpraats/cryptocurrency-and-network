@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import TransactionItem from './TransactionItem';
+import ClientService from '../services/clientService';
 
 const LatestTransactions = ({
   blockchain,
@@ -14,8 +15,20 @@ const LatestTransactions = ({
   }, [blockchain]);
 
   useEffect(() => {
-    const finalizedTransactions = blockchain.flatMap((block) => block.data);
-    setFinalizedTransactions(finalizedTransactions);
+    const fetchUsersBLocks = async () => {
+      try {
+        const usersTransactions =
+          await new ClientService().getUsersTransactions();
+        console.log(usersTransactions);
+        if (usersTransactions) {
+          setFinalizedTransactions(usersTransactions);
+        }
+      } catch (error) {
+        console.error('Failed to fetch users transactions: ' + error);
+      }
+    };
+
+    fetchUsersBLocks();
   }, [blockchain]);
 
   useEffect(() => {

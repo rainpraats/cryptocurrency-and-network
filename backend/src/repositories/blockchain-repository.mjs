@@ -10,7 +10,7 @@ export default class BlockchainRepository {
   }
 
   async getChain() {
-    const { chain } = await blockchainModel.findOne({});
-    return chain;
+    const blockchainDocument = await blockchainModel.findOne({});
+    return blockchainDocument ? blockchainDocument.chain : null;
   }
 }

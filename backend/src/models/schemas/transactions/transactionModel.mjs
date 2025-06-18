@@ -9,6 +9,7 @@ const transactionSchema = new mongoose.Schema({
     required: true,
   },
   input: { type: inputSchema, required: true },
+  userId: { type: String, required: true },
 });
 
 export default mongoose.model('Transaction', transactionSchema);
