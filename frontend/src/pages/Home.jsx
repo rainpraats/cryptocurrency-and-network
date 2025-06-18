@@ -9,19 +9,20 @@ const Home = () => {
   const [unFinalizedTransactions, setUnFinalizedTransactions] = useState([]);
 
   useEffect(() => {
-    if (blockchain.length) return;
-
     const fetchBlockchain = async () => {
       try {
-        const chain = await new ClientService().getChain();
-        setBlockchain(chain);
+        const chain = await new ClientService().getUsersBlocks();
+
+        if (chain) {
+          setBlockchain(chain);
+        }
       } catch (error) {
         console.error('Failed to fetch blockchain:', error);
       }
     };
 
     fetchBlockchain();
-  }, [blockchain]);
+  }, []);
 
   useEffect(() => {
     if (!blockchain) return;

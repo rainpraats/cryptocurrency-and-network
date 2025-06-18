@@ -14,8 +14,10 @@ const LatestBlocks = ({ blockchain, setBlockchain }) => {
     try {
       const success = await new ClientService().mineBlock();
       if (!success) throw new Error('Failed to mine block');
-      const chain = await new ClientService().getChain();
-      setBlockchain(chain);
+      const chain = await new ClientService().getUsersBlocks();
+      if (chain) {
+        setBlockchain(chain);
+      }
     } catch (error) {
       setErrorMsg('Could not mine block. Please try again.');
       console.error(error);

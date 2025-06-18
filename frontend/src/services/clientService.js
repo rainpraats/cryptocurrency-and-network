@@ -70,6 +70,41 @@ class ClientService {
     }
   }
 
+  async getUsersBlocks() {
+    const token = localStorage.getItem('jwt');
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/user/blocks', {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { data } = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getUsersTransactions() {
+    const token = localStorage.getItem('jwt');
+    try {
+      const response = await fetch(
+        'http://localhost:3000/api/v1/user/transactions',
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const { data } = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async mineBlock() {
     const token = localStorage.getItem('jwt');
     try {
@@ -82,9 +117,7 @@ class ClientService {
           },
         }
       );
-
-      const { data } = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
       throw new Error(error);
     }

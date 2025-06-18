@@ -21,19 +21,19 @@ export default class UserRepository {
     return await userModel.find();
   }
 
-  async addTransactionToUser(transaction) {
-    return await transactionModel.create(transaction);
-  }
+  // async addTransactionToUser(transaction) {
+  //   return await transactionModel.create(transaction);
+  // }
 
   async addBlockToUser(block) {
     return await blockModel.create(block);
   }
 
-  async getUsersTransactions(userId) {
+  async getTransactionsByUser(userId) {
     return await transactionModel.find({ userId: userId });
   }
 
-  async getUsersBlocks(userId) {
+  async getBlocksByUser(userId) {
     return await blockModel.find({ userId: userId });
   }
 }

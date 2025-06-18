@@ -2,6 +2,7 @@ import { transactionPool, wallet, server, blockChain } from '../server.mjs';
 import Miner from '../models/miner/Miner.mjs';
 import Wallet from '../models/wallet/Wallet.mjs';
 import BlockchainRepository from '../repositories/blockchain-repository.mjs';
+import UserRepository from '../repositories/user-repository.mjs';
 
 export const addTransaction = (req, res) => {
   const { amount, recipient } = req.body;
@@ -50,6 +51,7 @@ export const listAllTransactions = (req, res) => {
 };
 
 export const mineTransactions = (req, res) => {
+  const userId = req.user._id.toString();
   const miner = new Miner({
     transactionPool: transactionPool,
     wallet: wallet,
@@ -59,13 +61,15 @@ export const mineTransactions = (req, res) => {
 
   miner.mineTransactions();
 
-  console.log('does minetransactions have the latest block?');
-  console.log(blockChain);
   new BlockchainRepository().backupChain(blockChain.chain);
+
+  // get latest block
+  const latestBlock = blockChain.chain.at(-1);
+  latestBlock.userId = userId;
+  new UserRepository().addBlockToUser(latestBlock);
 
   res.status(200).json({
     success: true,
     statusCode: 200,
-    data: 'Off I go then!',
   });
 };

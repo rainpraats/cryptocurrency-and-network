@@ -62,8 +62,6 @@ const PORT = NODE_PORT || DEFAULT_PORT;
 
 if (PORT === DEFAULT_PORT) {
   const backupChain = await new BlockchainRepository().getChain();
-  console.log('from server, backupchain');
-  console.log(backupChain);
   if (backupChain) {
     blockChain.replaceChain(backupChain, true);
   }
