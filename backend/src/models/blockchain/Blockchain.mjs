@@ -7,7 +7,6 @@ import { REWARD_ADDRESS, MINING_REWARD } from '../../utilities/config.mjs';
 export default class Blockchain {
   constructor() {
     this.chain = [Block.genesis()];
-    // this.chain.push(Block.genesis())
   }
 
   addBlock({ data }) {
@@ -18,7 +17,6 @@ export default class Blockchain {
     this.chain.push(addedBlock);
   }
 
-  // replaceChain tar in en lista av block...
   replaceChain(chain, shouldValidate, callback) {
     if (chain.length <= this.chain.length) return;
 
@@ -33,8 +31,6 @@ export default class Blockchain {
     this.chain = chain;
   }
 
-  // Validerar inkommande lista av transaktioner mot aktuell instans och dess
-  // lista av transaktioner...
   validateTransactionData({ chain }) {
     for (let i = 1; i < chain.length; i++) {
       const block = chain[i];
@@ -45,7 +41,6 @@ export default class Blockchain {
         if (transaction.input.address === REWARD_ADDRESS.address) {
           rewardCount += 1;
 
-          // Regel 1: Kontrollera om det finns fler belöningstransaktion än 1.
           if (rewardCount > 1) {
             throw new Error('Too many rewards');
           }
@@ -85,7 +80,6 @@ export default class Blockchain {
       return false;
     }
 
-    // Testa hela kedjan för att hitta eventuella felaktigheter...
     for (let i = 1; i < chain.length; i++) {
       const { timestamp, data, hash, lastHash, nonce, difficulty } =
         chain.at(i);

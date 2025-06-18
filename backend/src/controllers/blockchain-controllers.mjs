@@ -1,3 +1,4 @@
+import BlockchainRepository from '../repositories/blockchain-repository.mjs';
 import { blockChain } from '../server.mjs';
 import { server } from '../server.mjs';
 
@@ -11,6 +12,8 @@ export const addBlock = (req, res) => {
   blockChain.addBlock({ data });
 
   server.broadcastChain();
+
+  new BlockchainRepository().backupChain(blockChain.chain);
 
   res
     .status(201)

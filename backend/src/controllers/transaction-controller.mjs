@@ -1,6 +1,7 @@
 import { transactionPool, wallet, server, blockChain } from '../server.mjs';
 import Miner from '../models/miner/Miner.mjs';
 import Wallet from '../models/wallet/Wallet.mjs';
+import BlockchainRepository from '../repositories/blockchain-repository.mjs';
 
 export const addTransaction = (req, res) => {
   const { amount, recipient } = req.body;
@@ -57,6 +58,10 @@ export const mineTransactions = (req, res) => {
   });
 
   miner.mineTransactions();
+
+  console.log('does minetransactions have the latest block?');
+  console.log(blockChain);
+  new BlockchainRepository().backupChain(blockChain.chain);
 
   res.status(200).json({
     success: true,

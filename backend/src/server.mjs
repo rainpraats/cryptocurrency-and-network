@@ -9,6 +9,7 @@ import errorHandler from './middleware/errorHandler.mjs';
 import AppError from './models/appError.mjs';
 import userRouter from './routes/user-routes.mjs';
 import authRouter from './routes/auth-routes.mjs';
+import BlockchainRepository from './repositories/blockchain-repository.mjs';
 
 export const blockChain = new Blockchain();
 export const transactionPool = new TransactionPool();
@@ -40,13 +41,13 @@ app.all('*', (req, res, next) => {
 app.use(errorHandler);
 
 const synchronize = async () => {
-  let response = await fetch(`${ROOT_NODE}/api/blocks`);
+  let response = await fetch(`${ROOT_NODE}/api/v1/blocks`);
   if (response) {
     const result = await response.json();
     blockChain.replaceChain(result.data.chain);
   }
 
-  response = await fetch(`${ROOT_NODE}/api/wallet/transactions`);
+  response = await fetch(`${ROOT_NODE}/api/v1/wallet/transactions`);
   if (response) {
     const result = await response.json();
     transactionPool.replaceMap(result.data);
@@ -58,6 +59,15 @@ if (process.env.GENERATE_NODE_PORT === 'true') {
 }
 
 const PORT = NODE_PORT || DEFAULT_PORT;
+
+if (PORT === DEFAULT_PORT) {
+  const backupChain = await new BlockchainRepository().getChain();
+  console.log('from server, backupchain');
+  console.log(backupChain);
+  if (backupChain) {
+    blockChain.replaceChain(backupChain, true);
+  }
+}
 
 app.listen(PORT, () => {
   console.log(
