@@ -78,7 +78,9 @@ class ClientService {
           authorization: `Bearer ${token}`,
         },
       });
-
+      if (response.statusCode === 403) {
+        return null;
+      }
       const { data } = await response.json();
       return data;
     } catch (error) {

@@ -4,6 +4,8 @@ import BlockItem from './BlockItem';
 import './LatestBlocks.css';
 
 const LatestBlocks = ({ usersBlocks, setUsersBlocks, fetchWalletInfo }) => {
+  if (!usersBlocks) return null;
+
   const [isMining, setIsMining] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 

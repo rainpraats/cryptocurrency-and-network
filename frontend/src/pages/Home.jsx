@@ -8,17 +8,14 @@ import Footer from '../components/Footer';
 import './Home.css';
 
 const Home = () => {
-  const [usersBlocks, setUsersBlocks] = useState([]);
+  const [usersBlocks, setUsersBlocks] = useState();
   const [walletInfo, setWalletInfo] = useState({});
 
   useEffect(() => {
     const fetchUsersBlocks = async () => {
       try {
         const blocks = await new ClientService().getUsersBlocks();
-
-        if (blocks) {
-          setUsersBlocks(blocks);
-        }
+        setUsersBlocks(blocks);
       } catch (error) {
         console.error('Failed to fetch users blocks:', error);
       }
