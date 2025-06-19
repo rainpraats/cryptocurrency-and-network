@@ -55,7 +55,6 @@ describe('TransactionPool', () => {
           amount: 25,
         });
 
-        // Skapa felaktiga transaktioner...
         if (i % 3 === 0) {
           transaction.input.amount = 1010;
         } else if (i % 3 === 1) {
@@ -75,8 +74,6 @@ describe('TransactionPool', () => {
     });
   });
 
-  // Osäker, kan av misstag ta bort ej befintliga transaktioner
-  // som ännu ej är placerade i ett block eller blockkedja
   describe('empty out the transaction pool', () => {
     it('should clear the transactionPool', () => {
       transactionPool.clearTransactions();

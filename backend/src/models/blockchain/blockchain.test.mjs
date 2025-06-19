@@ -153,8 +153,6 @@ describe('Blockchain', () => {
       });
     });
 
-    // Regel 2: Kontrollera så att outputMap strukturen är korrekt formaterad
-    // Test ska agera på felaktigt format...
     describe('and the transaction has a badly formatted outputMap', () => {
       describe('and the transaction is not a reward transaction', () => {
         it('should throw an error', () => {

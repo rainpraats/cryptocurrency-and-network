@@ -5,8 +5,7 @@ import { createHash } from '../../utilities/hash.mjs';
 import { MINE_RATE } from '../../utilities/config.mjs';
 
 describe('Block', () => {
-  // dummy data...
-  const timestamp = 2000; //new Date().toString();
+  const timestamp = 2000;
   const currentHash = 'current-hash';
   const lastHash = 'prev-hash';
   const data = [1, 2, 3, 4, 5];
@@ -66,18 +65,16 @@ describe('Block', () => {
 
     it('should return an instance of the Block class', () => {
       expect(block instanceof Block).toBeTruthy();
-      // expect(block instanceof Block).toBe(true);
     });
   });
 
   describe('genesis() function', () => {
     const genesisBlock = Block.genesis();
 
-    // Test 1. Är genesis blocket en referens till Block klassen...
     it('should return an instance of the Block class', () => {
       expect(genesisBlock instanceof Block).toBeTruthy();
     });
-    // Test 2. Kontrollera så att genesis blocket innehåller korrekt start data...
+
     it('should return the genesis data', () => {
       expect(genesisBlock).toEqual(GENESIS_BLOCK);
     });
@@ -116,15 +113,12 @@ describe('Block', () => {
       );
     });
 
-    // 000abf456fa...
-    // Steg för att testa svårighetsgraden och antal inledande 0...
     it('should create a hash based on the difficulty level', () => {
       expect(minedBlock.hash.substring(0, minedBlock.difficulty)).toEqual(
         '0'.repeat(minedBlock.difficulty)
       );
     });
 
-    // Kontrollera så att justeringen av difficulty görs på rätt sätt...
     it('should adjust the difficulty level', () => {
       const results = [
         previousBlock.difficulty + 1,

@@ -24,7 +24,6 @@ describe('Transaction', () => {
   });
 
   describe('outputMap', () => {
-    // Output map egenskaperna balance och adress
     it('should should have an outputMap property', () => {
       expect(transaction).toHaveProperty('outputMap');
     });

@@ -1,7 +1,7 @@
 import redis from 'redis';
 
 const CHANNELS = {
-  BLOCKCHAIN: 'SMARTCHAIN',
+  BLOCKCHAIN: 'BLOCKCHAIN',
   TRANSACTION: 'TRANSACTION',
 };
 
@@ -14,7 +14,6 @@ export default class Network {
     this.publisher = redis.createClient();
     this.subscriber = redis.createClient();
 
-    // Ladda in alla kanaler...
     this.loadChannels();
 
     this.subscriber.on('message', (channel, message) =>

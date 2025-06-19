@@ -12,7 +12,7 @@ const router = express.Router();
 router
   .route('/transactions')
   .post(protect, addTransaction)
-  .get(listAllTransactions); // i just want to return a specific users transaction based on whatever protect adds to the req.user
+  .get(listAllTransactions);
 router
   .route('/transactions/mine')
   .get(protect, authorize('miner', 'admin'), mineTransactions);

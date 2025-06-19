@@ -77,19 +77,14 @@ describe('Wallet', () => {
 
       it('should output the amount to the recipient', () => {
         expect(transaction.outputMap[recipient]).toEqual(amount);
-        // transaction.outputMap[recipient] = transaction.outputMap['Michael][25]
       });
     });
 
-    // Om en blockkedja är medskickad behöver vi anropa calculateBalance...
     describe('and a chain is supplied', () => {
-      // Bekräfta att calculateBalance anropas...
       it('should call the Wallet.calculateBalance', () => {
         const calculateBalanceMockFn = vi.fn();
 
-        // Spara undan den riktiga Wallet.calculateBalance i en variabel...
         const orgCalculateBalance = Wallet.calculateBalance;
-        // Koppla Wallet.calculateBalance till calculateBalanceMockFn...
         Wallet.calculateBalance = calculateBalanceMockFn;
 
         wallet.createTransaction({
@@ -100,7 +95,6 @@ describe('Wallet', () => {
 
         expect(calculateBalanceMockFn).toHaveBeenCalled();
 
-        // Återställ ordningen, det vill säga koppla tillbaka Wallet.calculateBalance
         Wallet.calculateBalance = orgCalculateBalance;
       });
     });
@@ -113,7 +107,6 @@ describe('Wallet', () => {
       blockchain = new Blockchain();
     });
 
-    // 1. När det inte finns några transaktioner(outputMap)
     describe('and there is not output for the wallet', () => {
       it('should return the initial balance "INITIAL_BALANCE"', () => {
         expect(
@@ -125,7 +118,6 @@ describe('Wallet', () => {
       });
     });
 
-    // 2. Det finns transaktioner för aktuell plånbok...
     describe('and there are outputs(transactions) for the wallet', () => {
       let transaction1, transaction2;
 
@@ -186,7 +178,6 @@ describe('Wallet', () => {
               amount: 25,
             });
 
-            // Reward transaction...
             recentBlockTransaction = Transaction.transactionReward({
               miner: wallet,
             });
@@ -195,7 +186,6 @@ describe('Wallet', () => {
               data: [recentTransaction, recentBlockTransaction],
             });
 
-            // Create a new transaction for a new Wallet...
             nextBlockTransaction = new Wallet().createTransaction({
               recipient: wallet.publicKey,
               amount: 100,

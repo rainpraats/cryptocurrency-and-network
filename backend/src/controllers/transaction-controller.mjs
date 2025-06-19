@@ -66,7 +66,6 @@ export const mineTransactions = (req, res) => {
 
   new BlockchainRepository().backupChain(blockChain.chain);
 
-  // get latest block
   const latestBlock = blockChain.chain.at(-1);
   latestBlock.userId = userId;
   new UserRepository().addBlockToUser(latestBlock);
