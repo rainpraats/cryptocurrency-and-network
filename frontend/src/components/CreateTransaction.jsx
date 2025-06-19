@@ -2,13 +2,7 @@ import { useState } from 'react';
 import ClientService from '../services/clientService';
 import './CreateTransaction.css';
 
-const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
-  // confirmation message for transaction success
-  // Invisible if not signed in.
-  // Send button will switch to sending animation while broadcasting transaction.
-  // Has a text box displaying messages.
-
-  // when transaction is added update the unFinalizedTransactions
+const CreateTransaction = () => {
   const [isSending, setIsSending] = useState(false);
   const [transactionMessage, setTransactionMessage] = useState('');
   const [recipient, setRecipient] = useState('');
@@ -25,15 +19,12 @@ const CreateTransaction = ({ updateUnFinalizedTransactions }) => {
         amount
       );
       if (success) {
-        updateUnFinalizedTransactions();
         setTransactionMessage(
           'Transaction has been confirmed and will be included in the next block.'
         );
       }
     } catch (error) {
-      setTransactionMessage(
-        'Failed to send transaction. The server might be offline.'
-      );
+      setTransactionMessage('Failed to send transaction.');
       console.error(error);
     } finally {
       setIsSending(false);

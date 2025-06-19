@@ -1,0 +1,21 @@
+.transaction-item {
+  list-style: none;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+}
+
+.hash-and-date {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.reciever-and-amount {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}

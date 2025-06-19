@@ -1,40 +1,41 @@
-import React from 'react';
+import './TransactionItem.css';
 
-const TransactionItem = ({ transaction }) => {
+const TransactionItem = ({ transaction, usersAddress }) => {
   const amount = Object.values(transaction.outputMap).reduce(
     (accumulator, currentValue) => accumulator + currentValue
   );
 
   return (
-    <li>
-      <p>{transaction.id}</p>
-      <p>
-        {transaction.input.timestamp
-          ? new Date(transaction.input.timestamp).toLocaleString()
-          : ''}
-      </p>
-      <p>{amount}</p>
+    <li className="transaction-item">
+      <div className="hash-and-date">
+        <p>{`...${transaction.id.slice(-10)}`}</p>
+        <p>
+          {transaction.input.timestamp
+            ? new Date(transaction.input.timestamp).toLocaleString()
+            : ''}
+        </p>
+      </div>
       <div>
-        <details>
-          <summary>
-            <p>From</p>
-          </summary>
-          <p>{transaction.input.address}</p>
-          <p>{transaction.input.amount}</p>
-        </details>
-        <details>
-          <summary>
-            <p>To</p>
-          </summary>
-          <ul>
-            {Object.entries(transaction.outputMap).map(([address, amount]) => (
-              <li key={`${transaction.id}-${address}`}>
-                <p>{address}</p>
-                <p>{amount}</p>
-              </li>
-            ))}
-          </ul>
-        </details>
+        <p>To</p>
+        <ul>
+          {Object.entries(transaction.outputMap).map(([address, amount]) => {
+            if (address !== usersAddress) {
+              return (
+                <li
+                  className="reciever-and-amount"
+                  key={`${transaction.id}-${address}`}
+                >
+                  <p>
+                    Address:{' '}
+                    {address.length > 10 ? `...${address.slice(-10)}` : address}
+                  </p>
+                  <p>Amount: {amount}</p>
+                </li>
+              );
+            }
+            return null;
+          })}
+        </ul>
       </div>
     </li>
   );

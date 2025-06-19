@@ -1,0 +1,8 @@
+.login-form {
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.08);
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  margin: 2rem auto;
+}

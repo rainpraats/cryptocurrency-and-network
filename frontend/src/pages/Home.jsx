@@ -3,52 +3,66 @@ import CreateTransaction from '../components/CreateTransaction';
 import LatestBlocks from '../components/LatestBlocks';
 import ClientService from '../services/clientService';
 import LatestTransactions from '../components/LatestTransactions';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import './Home.css';
 
 const Home = () => {
-  const [blockchain, setBlockchain] = useState([]);
-  const [unFinalizedTransactions, setUnFinalizedTransactions] = useState([]);
+  const [usersBlocks, setUsersBlocks] = useState([]);
+  const [walletInfo, setWalletInfo] = useState({});
 
   useEffect(() => {
-    const fetchBlockchain = async () => {
+    const fetchUsersBlocks = async () => {
       try {
-        const chain = await new ClientService().getUsersBlocks();
+        const blocks = await new ClientService().getUsersBlocks();
 
-        if (chain) {
-          setBlockchain(chain);
+        if (blocks) {
+          setUsersBlocks(blocks);
         }
       } catch (error) {
-        console.error('Failed to fetch blockchain:', error);
+        console.error('Failed to fetch users blocks:', error);
       }
     };
 
-    fetchBlockchain();
+    fetchUsersBlocks();
   }, []);
 
   useEffect(() => {
-    if (!blockchain) return;
-    console.log(blockchain);
-  }, [blockchain]);
+    if (!usersBlocks) return;
+    console.log(usersBlocks);
+  }, [usersBlocks]);
 
-  const updateUnFinalizedTransactions = async () => {
+  const fetchWalletInfo = async () => {
     try {
-      const transactionObj = await new ClientService().listTransactions();
-      setUnFinalizedTransactions(Object.values(transactionObj));
+      const wallet = await new ClientService().getWalletInfo();
+      if (wallet) {
+        setWalletInfo(wallet);
+      }
     } catch (error) {
-      console.error('Failed to fetch transactions:', error);
+      console.error(error);
     }
   };
 
+  useEffect(() => {
+    fetchWalletInfo();
+  }, []);
+
   return (
     <>
-      <CreateTransaction
-        updateUnFinalizedTransactions={updateUnFinalizedTransactions}
-      />
-      <LatestBlocks blockchain={blockchain} setBlockchain={setBlockchain} />
-      <LatestTransactions
-        blockchain={blockchain}
-        updateUnFinalizedTransactions={updateUnFinalizedTransactions}
-        unFinalizedTransactions={unFinalizedTransactions}
-      />
+      <Header />
+      <main>
+        <CreateTransaction />
+        <LatestBlocks
+          usersBlocks={usersBlocks}
+          setUsersBlocks={setUsersBlocks}
+          fetchWalletInfo={fetchWalletInfo}
+        />
+        <LatestTransactions
+          usersBlocks={usersBlocks}
+          usersAddress={walletInfo.address}
+        />
+      </main>
+      <Footer walletInfo={walletInfo} />
     </>
   );
 };

@@ -3,7 +3,7 @@ import ClientService from '../services/clientService';
 import BlockItem from './BlockItem';
 import './LatestBlocks.css';
 
-const LatestBlocks = ({ blockchain, setBlockchain }) => {
+const LatestBlocks = ({ usersBlocks, setUsersBlocks, fetchWalletInfo }) => {
   const [isMining, setIsMining] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -14,10 +14,11 @@ const LatestBlocks = ({ blockchain, setBlockchain }) => {
     try {
       const success = await new ClientService().mineBlock();
       if (!success) throw new Error('Failed to mine block');
-      const chain = await new ClientService().getUsersBlocks();
-      if (chain) {
-        setBlockchain(chain);
+      const blocks = await new ClientService().getUsersBlocks();
+      if (blocks) {
+        setUsersBlocks(blocks);
       }
+      fetchWalletInfo();
     } catch (error) {
       setErrorMsg('Could not mine block. Please try again.');
       console.error(error);
@@ -34,10 +35,10 @@ const LatestBlocks = ({ blockchain, setBlockchain }) => {
         {isMining ? 'Mining...' : 'Mine Block'}
       </button>
       <ul>
-        {[...blockchain].reverse().map((block, index) => (
+        {[...usersBlocks].reverse().map((block, index) => (
           <BlockItem
             key={block.hash}
-            blockNumber={blockchain.length - index}
+            blockNumber={usersBlocks.length - index}
             block={block}
           />
         ))}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import ClientService from '../services/clientService';
+import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -30,35 +31,41 @@ const Login = () => {
 
   const signUpUser = async () => {
     try {
-      const success = await new ClientService().signUp();
+      const success = await new ClientService().signUp({
+        email: email,
+        password: password,
+      });
 
       if (success) {
         loginUser();
-      } else {
-        setError('There was a problem when signing up.');
       }
     } catch (error) {
+      setError('There was a problem when signing up.');
       console.error(error);
     }
-
-    loginUser();
   };
 
   return (
-    <form onSubmit={handleLoginFormSubmit}>
-      <h2>Login</h2>
+    <form className="login-form" onSubmit={handleLoginFormSubmit}>
+      <h1>Cryptocurrency client application</h1>
       <input
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          setError('');
+        }}
         required
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          setError('');
+        }}
         required
       />
       <button type="submit">Log In</button>
