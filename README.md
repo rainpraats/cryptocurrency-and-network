@@ -1,16 +1,35 @@
 # cryptocurrency-and-network
 
-Client application is made in react.
-To start the client:
+The frontend application is made with react.
 
-1. Make sure you have a config/config.env file with the port of the server that you want your client to make requests to.
-2. In the terminal type: cd frontend && npm run dev
+## How to
 
-Starting the backend:
+### Start the backend:
 
 1. Make sure that you have the config/config.env file with these fields:
    PORT,
    MONGO_URI,
    JWT_SECRET,
    JWT_EXPIRES,
-2. In the terminal type: cd backend && npm run dev
+2. In the terminal type: cd backend && npm run dev (or if you prefer npm run start)
+
+### Start the frontend:
+
+In the terminal type: cd frontend && npm run dev
+
+### Make an account
+
+The login page will let you sign up. By default signing up will make an account with the role user.
+To make an account with the role miner or admin you need to make a http POST request to the server.
+
+### HTTP post request Example
+
+http://localhost:3000/api/v1/user
+
+{
+
+        "email": "b@b.se",
+        "role": "miner",
+        "password": "12345678"
+
+}

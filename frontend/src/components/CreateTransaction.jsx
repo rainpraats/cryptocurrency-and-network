@@ -14,14 +14,18 @@ const CreateTransaction = () => {
     setIsSending(true);
     setTransactionMessage('');
     try {
-      const success = await new ClientService().sendTransaction(
+      const response = await new ClientService().sendTransaction(
         recipient,
         amount
       );
-      if (success) {
+      if (response.success) {
         setTransactionMessage(
           'Transaction has been confirmed and will be included in the next block.'
         );
+      } else {
+        response.error
+          ? setTransactionMessage(response.error)
+          : setTransactionMessage('Failed to send transaction.');
       }
     } catch (error) {
       setTransactionMessage('Failed to send transaction.');

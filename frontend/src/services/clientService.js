@@ -181,8 +181,7 @@ class ClientService {
         }
       );
 
-      const { success } = await response.json();
-      return success;
+      return await response.json();
     } catch (error) {
       throw new Error(error);
     }

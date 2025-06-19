@@ -5,7 +5,6 @@ import ClientService from '../services/clientService';
 import LatestTransactions from '../components/LatestTransactions';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import './Home.css';
 
 const Home = () => {
   const [usersBlocks, setUsersBlocks] = useState();
