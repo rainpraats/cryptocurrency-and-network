@@ -8,9 +8,4 @@ export default class BlockchainRepository {
       { upsert: true, new: true }
     );
   }
-
-  async getChain() {
-    const blockchainDocument = await blockchainModel.findOne({});
-    return blockchainDocument ? blockchainDocument.chain : null;
-  }
 }

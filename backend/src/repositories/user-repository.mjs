@@ -21,8 +21,11 @@ export default class UserRepository {
     return await userModel.find();
   }
 
-  async addTransactionToUser(transaction) {
-    return await transactionModel.create(transaction);
+  async addAllUserTransactions(transactions) {
+    const plainTransactions = transactions.map((tx) => {
+      return { ...tx };
+    });
+    await transactionModel.insertMany(plainTransactions);
   }
 
   async addBlockToUser(block) {

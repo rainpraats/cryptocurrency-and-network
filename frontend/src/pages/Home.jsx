@@ -23,11 +23,6 @@ const Home = () => {
     fetchUsersBlocks();
   }, []);
 
-  useEffect(() => {
-    if (!usersBlocks) return;
-    console.log(usersBlocks);
-  }, [usersBlocks]);
-
   const fetchWalletInfo = async () => {
     try {
       const wallet = await new ClientService().getWalletInfo();

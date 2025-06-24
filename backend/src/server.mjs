@@ -9,7 +9,6 @@ import errorHandler from './middleware/errorHandler.mjs';
 import AppError from './models/appError.mjs';
 import userRouter from './routes/user-routes.mjs';
 import authRouter from './routes/auth-routes.mjs';
-import BlockchainRepository from './repositories/blockchain-repository.mjs';
 
 export const blockChain = new Blockchain();
 export const transactionPool = new TransactionPool();
@@ -59,13 +58,6 @@ if (process.env.GENERATE_NODE_PORT === 'true') {
 }
 
 const PORT = NODE_PORT || DEFAULT_PORT;
-
-if (PORT === DEFAULT_PORT) {
-  const backupChain = await new BlockchainRepository().getChain();
-  if (backupChain) {
-    blockChain.replaceChain(backupChain, true);
-  }
-}
 
 app.listen(PORT, () => {
   console.log(

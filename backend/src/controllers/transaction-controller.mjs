@@ -14,11 +14,10 @@ export const addTransaction = (req, res) => {
   try {
     if (transaction) {
       transaction.update({ sender: wallet, recipient, amount });
-      transaction.userId = userId;
     } else {
       transaction = wallet.createTransaction({ recipient, amount });
-      transaction.userId = userId;
     }
+    transaction.userId = userId;
   } catch (error) {
     return res
       .status(400)

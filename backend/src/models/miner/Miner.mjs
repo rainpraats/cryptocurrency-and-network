@@ -14,6 +14,8 @@ export default class Miner {
 
     validTransactions = this.transactionPool.validateTransactions();
 
+    new UserRepository().addAllUserTransactions(validTransactions);
+
     validTransactions.push(
       Transaction.transactionReward({ miner: this.wallet })
     );
@@ -22,11 +24,6 @@ export default class Miner {
 
     this.server.broadcastChain();
 
-    Object.values(this.transactionPool.transactionMap).forEach(
-      (transaction) => {
-        new UserRepository().addTransactionToUser(transaction);
-      }
-    );
     this.transactionPool.clearTransactions();
   }
 }
